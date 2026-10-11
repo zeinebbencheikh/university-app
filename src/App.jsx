@@ -27,7 +27,9 @@ function App() {
       <p><strong>Année d’étude :</strong>{etudiant.anne}</p>
       <p><strong>Groupe :</strong>{etudiant.groupe}</p>
       <p><strong>Ville :</strong> {etudiant.ville}</p>
-      <button>Contactez-moi</button>
+      <a href='mailto:zaynebbencheikh98@gmail.com'>
+        <button>Contactez-moi</button>
+      </a>
     </div>
   )
 }
