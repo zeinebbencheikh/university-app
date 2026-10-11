@@ -9,7 +9,7 @@ const etudiant = {
   prenom:"zayneb",
   telephone:"95020064",
   mail:"zaynebbencheikh98@gmail.com",
-  filiere:" Génie Logicd’Informationiel et Systèmes",
+  filiere:" Génie Logiciel et Systèmes d'Informatique",
   anne:"2ème année",
   groupe:"GLSI 2D",
   ville:"mahdia",
@@ -28,7 +28,7 @@ function App() {
       <p><strong>Groupe :</strong>{etudiant.groupe}</p>
       <p><strong>Ville :</strong> {etudiant.ville}</p>
       <a href='mailto:zaynebbencheikh98@gmail.com'>
-        <button>Contactez-moi</button>
+        <button>contactez-moi</button>
       </a>
     </div>
   )
