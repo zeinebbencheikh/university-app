@@ -1,21 +1,64 @@
-import Image from "../assets/image.jpg";
 
-function StudentCard(props) {
+function StudentCard({
+  nom,
+  email,
+  tel,
+  filiere,
+  annee,
+  groupe,
+  ville,
+  image,
+}) {
   return (
-    <div className="card">
-      <img src={Image} alt="Photo étudiante" />
-      <h1>Fiche étudiant</h1>
-      <p><strong>Nom & Prénom :</strong> {props.nom} {props.prenom}</p>
-      <p><strong>Email :</strong> {props.mail}</p>
-      <p><strong>Téléphone :</strong> {props.telephone}</p>
-      <p><strong>Filière :</strong> {props.filiere}</p>
-      <p><strong>Année d'étude :</strong> {props.anne}</p>
-      <p><strong>Groupe :</strong> {props.groupe}</p>
-      <p><strong>Ville :</strong> {props.ville}</p>
-      <a href={"mailto:" + props.mail}>
-        <button>Contactez-moi</button>
+    <article className="student-card">
+      <div className="student-card-header">
+        <img
+          className="student-image"
+          src={image}
+          alt={`Photo de ${nom}`}
+        />
+
+        <span className="student-badge">Étudiant</span>
+      </div>
+
+      <h3>{nom}</h3>
+
+      <div className="student-information">
+        <p>
+          <strong>Email :</strong>
+          <a href={`mailto:${email}`}>{email}</a>
+        </p>
+
+        <p>
+          <strong>Téléphone :</strong>
+          <a href={`tel:${tel.replaceAll(" ", "")}`}>{tel}</a>
+        </p>
+
+        <p>
+          <strong>Filière :</strong>
+          {filiere}
+        </p>
+
+        <p>
+          <strong>Année d'étude :</strong>
+          {annee}
+        </p>
+
+        <p>
+          <strong>Groupe :</strong>
+          {groupe}
+        </p>
+
+        <p>
+          <strong>Ville :</strong>
+          {ville}
+        </p>
+      </div>
+
+      <a className="contact-button" href={`mailto:${email}`}>
+        Contactez-moi
       </a>
-    </div>
+    </article>
   );
 }
 
