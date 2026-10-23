@@ -39,7 +39,7 @@ const students = [
     filiere: "Génie logiciel",
     annee: "2026/2027",
     groupe: "GLSI2D",
-    ville: "Sousse",
+    ville: "Nabeul",
     image: monImag,
   },
 ];
