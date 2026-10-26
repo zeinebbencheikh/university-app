@@ -212,7 +212,28 @@ button:focus-visible,
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 25px;
+}
 
+.search-input {
+  min-width: 260px;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  font-size: 15px;
+}
+
+.student-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
 .footer {
   margin-top: auto;
   padding: 22px 20px;
