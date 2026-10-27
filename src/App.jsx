@@ -51,35 +51,23 @@ function App() {
   // État : le texte saisi pour filtrer par filière
   const [recherche, setRecherche] = useState("");
 
-  // 1. Ajouter un étudiant
+   // 1. Ajouter un étudiant
   const ajouterEtudiant = () => {
-  const nom = window.prompt("Nom et prénom de l'étudiant :");
-  if (!nom || nom.trim() === "") return; // annulé ou vide : on n'ajoute rien
+    const nouvelEtudiant = {
+      id: Date.now(),
+      nom: "Yassine Ben Salem",
+      email: "yassine.bensalem@gmail.com",
+      tel: "+216 44 444 444",
+      filiere: "Génie Logiciel et Systèmes d'Information",
+      annee: "2ème année",
+      groupe: "GLSI 1",
+      ville: "Kairouan",
+      image: mon,
+    };
 
-  const email = window.prompt("Email :", "etudiant@example.com");
-  const tel = window.prompt("Téléphone :", "+216 22 555 666");
-  const filiere = window.prompt("Filière :", "Informatique");
-  const annee = window.prompt("Année d'étude :", "2026/2027");
-  const groupe = window.prompt("Groupe :", "GLSI2D");
-  const ville = window.prompt("Ville :", "Non renseignée");
-
-  // On alterne entre les 3 photos existantes
-  const photos = [monImage, monImag, mon];
-
-  const nouvelEtudiant = {
-    id: Date.now(),
-    nom: nom.trim(),
-    email: email || "non renseigné",
-    tel: tel || "+216 00 000 000",
-    filiere: filiere || "Non renseignée",
-    annee: annee || "Non renseignée",
-    groupe: groupe || "Non renseigné",
-    ville: ville || "Non renseignée",
-    image: photos[etudiants.length % photos.length],
+    setEtudiants([...etudiants, nouvelEtudiant]);
   };
-
-  setEtudiants([...etudiants, nouvelEtudiant]);
-};
+  
 
   // 3. Supprimer un étudiant
   const supprimerEtudiant = (id) => {
