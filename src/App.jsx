@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "./components/Header.jsx";
 import Navbar from "./components/Navbar.jsx";
 import StudentCard from "./components/StudentCard.jsx";
+import StudentForm from "./components/StudentForm.jsx";
 import Footer from "./components/Footer.jsx";
 import "./App.css";
 import monImage from "./assets/image.jpg";
@@ -45,36 +46,34 @@ const etudiantsInitiaux = [
 ];
 
 function App() {
-  // État : la liste des étudiants
   const [etudiants, setEtudiants] = useState(etudiantsInitiaux);
-
-  // État : le texte saisi pour filtrer par filière
   const [recherche, setRecherche] = useState("");
+  const [afficherFormulaire, setAfficherFormulaire] = useState(false);
 
-   // 1. Ajouter un étudiant
-  const ajouterEtudiant = () => {
-    const nouvelEtudiant = {
+  // Ajouter un étudiant (reçoit les données du formulaire)
+  const ajouterEtudiant = (nouvelEtudiant) => {
+    const etudiantAvecId = {
       id: Date.now(),
-      nom: "Yassine Ben Salem",
-      email: "yassine.bensalem@gmail.com",
-      tel: "+216 44 444 444",
-      filiere: "Génie Logiciel et Systèmes d'Information",
-      annee: "2ème année",
-      groupe: "GLSI 1",
-      ville: "Kairouan",
-      image: mon,
+      nom: `${nouvelEtudiant.nom} ${nouvelEtudiant.prenom}`,
+      email: nouvelEtudiant.email,
+      tel: nouvelEtudiant.telephone,
+      filiere: nouvelEtudiant.filiere,
+      annee: nouvelEtudiant.anneeEtude,
+      groupe: nouvelEtudiant.groupe,
+      ville: nouvelEtudiant.ville,
+      image: nouvelEtudiant.image || mon,
     };
 
-    setEtudiants([...etudiants, nouvelEtudiant]);
+    setEtudiants((anciensEtudiants) => [...anciensEtudiants, etudiantAvecId]);
+    setAfficherFormulaire(false);
   };
-  
 
-  // 3. Supprimer un étudiant
+  // Supprimer un étudiant
   const supprimerEtudiant = (id) => {
     setEtudiants(etudiants.filter((etudiant) => etudiant.id !== id));
   };
 
-  // 4. Modifier le nom d'un étudiant
+  // Modifier le nom d'un étudiant
   const modifierEtudiant = (id, nouveauNom) => {
     setEtudiants(
       etudiants.map((etudiant) =>
@@ -83,7 +82,7 @@ function App() {
     );
   };
 
-  // 5. Filtrer par filière
+  // Filtrer par filière
   const etudiantsFiltres = etudiants.filter((etudiant) =>
     etudiant.filiere.toLowerCase().includes(recherche.trim().toLowerCase())
   );
@@ -109,8 +108,14 @@ function App() {
             onChange={(e) => setRecherche(e.target.value)}
           />
 
-          <button onClick={ajouterEtudiant}>Ajouter un étudiant</button>
+          <button onClick={() => setAfficherFormulaire(!afficherFormulaire)}>
+            {afficherFormulaire ? "Annuler" : "Ajouter un étudiant"}
+          </button>
         </div>
+
+        {afficherFormulaire && (
+          <StudentForm onAjouterEtudiant={ajouterEtudiant} />
+        )}
 
         <section className="students-list">
           {etudiantsFiltres.map((student) => (
