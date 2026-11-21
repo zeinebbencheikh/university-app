@@ -1,7 +1,9 @@
+
 import { useState } from "react";
 
 function StudentCard({
   id,
+  etudiant,
   nom,
   email,
   tel,
@@ -13,20 +15,12 @@ function StudentCard({
   onSupprimer,
   onModifier,
 }) {
-  // État propre à chaque fiche : coordonnées visibles ou non
+  // État des coordonnées
   const [coordonneesVisibles, setCoordonneesVisibles] = useState(false);
 
-  // Inverse la valeur à chaque clic
+  // Afficher ou masquer les coordonnées
   const basculerInformations = () => {
     setCoordonneesVisibles(!coordonneesVisibles);
-  };
-
-  // Demande un nouveau nom puis le transmet à App
-  const modifierNom = () => {
-    const nouveauNom = window.prompt("Nouveau nom et prénom :", nom);
-    if (nouveauNom && nouveauNom.trim() !== "") {
-      onModifier(id, nouveauNom.trim());
-    }
   };
 
   return (
@@ -59,23 +53,19 @@ function StudentCard({
         )}
 
         <p>
-          <strong>Filière :</strong>
-          {filiere}
+          <strong>Filière :</strong> {filiere}
         </p>
 
         <p>
-          <strong>Année d'étude :</strong>
-          {annee}
+          <strong>Année d'étude :</strong> {annee}
         </p>
 
         <p>
-          <strong>Groupe :</strong>
-          {groupe}
+          <strong>Groupe :</strong> {groupe}
         </p>
 
         <p>
-          <strong>Ville :</strong>
-          {ville}
+          <strong>Ville :</strong> {ville}
         </p>
       </div>
 
@@ -90,9 +80,13 @@ function StudentCard({
           Contactez-moi
         </a>
 
-        <button onClick={modifierNom}>Modifier</button>
+        <button onClick={() => onModifier(etudiant)}>
+          Modifier
+        </button>
 
-        <button onClick={() => onSupprimer(id)}>Supprimer</button>
+        <button onClick={() => onSupprimer(id)}>
+          Supprimer
+        </button>
       </div>
     </article>
   );

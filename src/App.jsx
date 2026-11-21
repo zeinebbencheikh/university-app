@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import Header from "./components/Header.jsx";
 import Navbar from "./components/Navbar.jsx";
@@ -5,6 +6,7 @@ import StudentCard from "./components/StudentCard.jsx";
 import StudentForm from "./components/StudentForm.jsx";
 import Footer from "./components/Footer.jsx";
 import "./App.css";
+
 import monImage from "./assets/image.jpg";
 import monImag from "./assets/image.png";
 import mon from "./assets/img.png";
@@ -12,7 +14,8 @@ import mon from "./assets/img.png";
 const etudiantsInitiaux = [
   {
     id: 1,
-    nom: "zeineb ben cheikh",
+    nom: "zeineb",
+    prenom: "ben cheikh",
     email: "zeinebbencheikh98@gmail.com",
     tel: "+216 95020064",
     filiere: "Génie logiciel et systèmes d'information",
@@ -23,7 +26,8 @@ const etudiantsInitiaux = [
   },
   {
     id: 2,
-    nom: "Slim Boubaker",
+    nom: "Slim",
+    prenom: "Boubaker",
     email: "slim.boubaker@example.com",
     tel: "+216 20 111 222",
     filiere: "Informatique",
@@ -34,7 +38,8 @@ const etudiantsInitiaux = [
   },
   {
     id: 3,
-    nom: "Sarra Trabelsi",
+    nom: "Sarra",
+    prenom: "Trabelsi",
     email: "sarra.trabelsi@example.com",
     tel: "+216 21 333 444",
     filiere: "Génie logiciel",
@@ -50,11 +55,15 @@ function App() {
   const [recherche, setRecherche] = useState("");
   const [afficherFormulaire, setAfficherFormulaire] = useState(false);
 
-  // Ajouter un étudiant (reçoit les données du formulaire)
+  // Étudiant sélectionné pour la modification
+  const [etudiantAModifier, setEtudiantAModifier] = useState(null);
+
+  // Ajouter un étudiant
   const ajouterEtudiant = (nouvelEtudiant) => {
     const etudiantAvecId = {
       id: Date.now(),
-      nom: `${nouvelEtudiant.nom} ${nouvelEtudiant.prenom}`,
+      nom: nouvelEtudiant.nom,
+      prenom: nouvelEtudiant.prenom,
       email: nouvelEtudiant.email,
       tel: nouvelEtudiant.telephone,
       filiere: nouvelEtudiant.filiere,
@@ -64,22 +73,50 @@ function App() {
       image: nouvelEtudiant.image || mon,
     };
 
-    setEtudiants((anciensEtudiants) => [...anciensEtudiants, etudiantAvecId]);
+    setEtudiants((anciensEtudiants) => [
+      ...anciensEtudiants,
+      etudiantAvecId,
+    ]);
+
     setAfficherFormulaire(false);
   };
 
   // Supprimer un étudiant
   const supprimerEtudiant = (id) => {
-    setEtudiants(etudiants.filter((etudiant) => etudiant.id !== id));
+    setEtudiants((anciensEtudiants) =>
+      anciensEtudiants.filter((etudiant) => etudiant.id !== id)
+    );
   };
 
-  // Modifier le nom d'un étudiant
-  const modifierEtudiant = (id, nouveauNom) => {
-    setEtudiants(
-      etudiants.map((etudiant) =>
-        etudiant.id === id ? { ...etudiant, nom: nouveauNom } : etudiant
+  // Sélectionner un étudiant à modifier
+  const modifierEtudiant = (etudiant) => {
+    setEtudiantAModifier(etudiant);
+    setAfficherFormulaire(true);
+  };
+
+  // Enregistrer les modifications
+  const enregistrerModification = (etudiantModifie) => {
+    setEtudiants((anciensEtudiants) =>
+      anciensEtudiants.map((etudiant) =>
+        etudiant.id === etudiantAModifier.id
+          ? {
+              ...etudiant,
+              nom: etudiantModifie.nom,
+              prenom: etudiantModifie.prenom,
+              email: etudiantModifie.email,
+              tel: etudiantModifie.telephone,
+              filiere: etudiantModifie.filiere,
+              annee: etudiantModifie.anneeEtude,
+              groupe: etudiantModifie.groupe,
+              ville: etudiantModifie.ville,
+              image: etudiantModifie.image || etudiant.image,
+            }
+          : etudiant
       )
     );
+
+    setEtudiantAModifier(null);
+    setAfficherFormulaire(false);
   };
 
   // Filtrer par filière
@@ -108,13 +145,24 @@ function App() {
             onChange={(e) => setRecherche(e.target.value)}
           />
 
-          <button onClick={() => setAfficherFormulaire(!afficherFormulaire)}>
+          <button
+            onClick={() => {
+              setAfficherFormulaire(!afficherFormulaire);
+              setEtudiantAModifier(null);
+            }}
+          >
             {afficherFormulaire ? "Annuler" : "Ajouter un étudiant"}
           </button>
         </div>
 
+        {/* Formulaire d'ajout ou de modification */}
         {afficherFormulaire && (
-          <StudentForm onAjouterEtudiant={ajouterEtudiant} />
+          <StudentForm
+            key={etudiantAModifier ? etudiantAModifier.id : "nouveau"}
+            onAjouterEtudiant={ajouterEtudiant}
+            etudiantAModifier={etudiantAModifier}
+            onModifierEtudiant={enregistrerModification}
+          />
         )}
 
         <section className="students-list">
@@ -122,7 +170,8 @@ function App() {
             <StudentCard
               key={student.id}
               id={student.id}
-              nom={student.nom}
+              etudiant={student}
+              nom={`${student.nom} ${student.prenom}`}
               email={student.email}
               tel={student.tel}
               filiere={student.filiere}
